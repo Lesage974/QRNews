@@ -15,34 +15,9 @@
       height: 100%;
       border: none;
     }
-    .fallback {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      font-family: sans-serif;
-      padding: 1rem;
-      text-align: center;
-    }
   </style>
 </head>
 <body>
-  <iframe id="pdfFrame" src="latest.pdf"></iframe>
-  <noscript>
-    <div class="fallback">
-      <p>PDF cannot be displayed. <a href="latest.pdf" target="_blank">Click here to download it.</a></p>
-    </div>
-  </noscript>
-  <script>
-    const iframe = document.getElementById('pdfFrame');
-
-    iframe.onerror = function () {
-      document.body.innerHTML = `
-        <div class="fallback">
-          <p>Unable to load PDF. <a href="latest.pdf" target="_blank">Click here to view or download it.</a></p>
-        </div>
-      `;
-    };
-  </script>
+  <iframe src="https://docs.google.com/gview?embedded=true&url=https://lesage974.github.io/latest.pdf"></iframe>
 </body>
 </html>
