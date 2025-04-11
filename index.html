@@ -9,15 +9,24 @@
       padding: 0;
       height: 100%;
     }
-    embed {
-      width: 100%;
+    .fallback {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: 100%;
-      border: none;
+      font-family: sans-serif;
+      color: #555;
+      text-align: center;
+      padding: 20px;
     }
   </style>
 </head>
 <body>
-  <embed src="latest.pdf" type="application/pdf" />
+  <object data="latest.pdf" type="application/pdf" width="100%" height="100%">
+    <div class="fallback">
+      <p><strong>No PDF available.</strong><br />Please check back later.</p>
+    </div>
+  </object>
 </body>
 </html>
 
