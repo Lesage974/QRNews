@@ -23,10 +23,15 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Authenticate with Google API
+    - name: Write Google API credentials
       run: |
+        if [ -z "${{ secrets.GOOGLE_CREDENTIALS }}" ]; then echo "Missing GOOGLE_CREDENTIALS"; exit 1; fi
+        if [ -z "${{ secrets.GOOGLE_TOKEN }}" ]; then echo "Missing GOOGLE_TOKEN"; exit 1; fi
         echo "${{ secrets.GOOGLE_CREDENTIALS }}" > credentials.json
         echo "${{ secrets.GOOGLE_TOKEN }}" > token.json
+        cat credentials.json  # TEMP: debug only, remove after testing
+        cat token.json        # TEMP: debug only, remove after testing
+
 
     - name: Set up GitHub authentication
       run: |
