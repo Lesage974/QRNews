@@ -27,13 +27,17 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Set up GitHub authentication
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/Lesage974/QRNews.git
+
       - name: Run fetch_pdf.py
         run: python fetch_pdf.py
 
       - name: Commit and push changes
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add latest.pdf
           git commit -m "Update PDF via GitHub Actions" || echo "No changes to commit"
           git push
