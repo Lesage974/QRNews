@@ -1,26 +1,19 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>QRNews PDF Viewer</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: #f0f0f0;
-    }
-    #viewer {
-      width: 100%;
-      height: 100vh;
-      border: none;
-    }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    iframe { width: 100%; height: 100%; border: none; }
   </style>
 </head>
 <body>
-  <!-- Pointing to viewer.html inside the 'web' folder, passing the URL of latest.pdf -->
+  <!-- The viewer.html inside the web folder expects the PDF relative to its location.
+       Assuming latest.pdf is in the repo root, you might need to pass the correct path.
+       Since viewer.html is in the web folder, you can pass the PDF as: -->
   <iframe src="web/viewer.html?file=../latest.pdf" allowfullscreen></iframe>
 </body>
 </html>
+
