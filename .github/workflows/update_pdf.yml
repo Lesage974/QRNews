@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install google-api-python-client google-auth google-auth-oauthlib
+          pip install -r requirements.txt
 
       - name: Run fetch_pdf.py
         run: python fetch_pdf.py
