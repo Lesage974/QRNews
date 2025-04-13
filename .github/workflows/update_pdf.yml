@@ -39,6 +39,6 @@ jobs:
 
     - name: Commit and push changes
       run: |
-        git add docs/latest.pdf
+        git add latest.pdf
         git commit -m "Update PDF via GitHub Actions"
         git push origin main
