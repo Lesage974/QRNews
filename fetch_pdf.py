@@ -16,16 +16,16 @@ def write_env_credentials():
     if credentials_data:
         with open("credentials.json", "w") as f:
             f.write(credentials_data)
-        print("✔ credentials.json written from env.")
+        print("credentials.json written from env.")
     else:
-        print("❌ GOOGLE_CREDENTIALS env var not found!")
+        print("GOOGLE_CREDENTIALS env var not found!")
 
     if token_data:
         with open("token.json", "w") as f:
             f.write(token_data)
-        print("✔ token.json written from env.")
+        print("token.json written from env.")
     else:
-        print("❌ GOOGLE_TOKEN env var not found!")
+        print("GOOGLE_TOKEN env var not found!")
 
 def authenticate():
     creds = None
