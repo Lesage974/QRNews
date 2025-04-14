@@ -31,8 +31,8 @@ jobs:
 
     - name: Set up GitHub authentication
       run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
         git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/Lesage974/QRNews.git
 
     - name: Run fetch_pdf.py
