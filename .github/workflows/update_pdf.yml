@@ -29,22 +29,28 @@ jobs:
         echo "${{ secrets.GOOGLE_TOKEN_B64 }}" | base64 -d > token.json
 
 
-    - name: Set up GitHub authentication
-      run: |
-        git config user.name "github-actions"
-        git config user.email "github-actions@github.com"
-        git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/Lesage974/QRNews.git
-        git remote -v
+    #- name: Set up GitHub authentication
+     #run: |
+          #git config user.name "github-actions"
+          #git config user.email "github-actions@github.com"
+          #git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/Lesage974/QRNews.git
+          #git remote -v
 
 
     - name: Run fetch_pdf.py
       run: python3 fetch_pdf.py
 
     - name: Commit and push changes
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
       run: |
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         git add latest.pdf
-        git commit -m "Update PDF via GitHub Actions" || echo "No changes to commit"
-        git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/Lesage974/QRNews.git
+        git commit -m "Update PDF via GitHub Actions" || echo "Nothing to commit"
+    
+        # Force remote to use the token
+        git remote remove origin
+        git remote add origin https://x-access-token:$GH_PAT@github.com/Lesage974/QRNews.git
+        git remote -v
         git push origin main
