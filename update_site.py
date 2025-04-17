@@ -1,35 +1,48 @@
-import shutil
 import os
-import datetime
+import shutil
 import subprocess
-from datetime import datetime
+import datetime
 
-# Paths
-REPO_PATH = "/home/pdfuploader/qrnews"
-PDF_SOURCE = os.path.join(REPO_PATH, "latest.pdf")
-DOCS_DIR = os.path.join(REPO_PATH, "QRNews")
+# Use current working directory as repo root
+d = os.getcwd()
+PDF_SOURCE = os.path.join(d, "latest.pdf")
+DOCS_DIR = os.path.join(d, "docs")
 PDF_DEST = os.path.join(DOCS_DIR, "latest.pdf")
 
-def update_github_repo():
-    print("Copying PDF to repo...")
-    print(PDF_SOURCE)
-    print(PDF_DEST)
 
-    #Make a pull to be up to date
-    os.chdir(DOCS_DIR)
-    subprocess.run(["git", "pull"])
+def run(cmd):
+    """Run a shell command, print stdout/stderr."""
+    print(f"Running: {' '.join(cmd)}")
+    proc = subprocess.run(cmd, cwd=d, capture_output=True, text=True)
+    if proc.stdout:
+        print(proc.stdout.strip())
+    if proc.stderr:
+        print(proc.stderr.strip())
+    return proc
 
-    # Make sure the 'docs' folder exists
+
+def update_site():
+    print("\n== Copying PDF to docs folder ==")
     os.makedirs(DOCS_DIR, exist_ok=True)
-
     shutil.copy(PDF_SOURCE, PDF_DEST)
 
-    print("Committing and pushing to GitHub...")
-    subprocess.run(["git", "add", "latest.pdf"])
-    commit_msg = f"Update PDF on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-    subprocess.run(["git", "commit", "-m", commit_msg])
-    subprocess.run(["git", "push"])
+    print("\n== Sync remote changes ==")
+    run(["git", "pull", "origin", "main"]);  # fetch latest
+
+    print("\n== Staging update ==")
+    run(["git", "add", "docs/latest.pdf"])
+
+    # Check if there is anything to commit
+    check = run(["git", "diff", "--cached", "--quiet"])
+    if check.returncode != 0:
+        commit_msg = f"Automated PDF update: {datetime.datetime.now().isoformat()}"
+        print(f"\n== Committing: {commit_msg} ==")
+        run(["git", "commit", "-m", commit_msg])
+        print("\n== Pushing to origin/main ==")
+        run(["git", "push", "origin", "main"])
+    else:
+        print("\nNo changes detected; nothing to commit or push.")
+
 
 if __name__ == "__main__":
-    update_github_repo()
-
+    update_site()
