@@ -72,7 +72,6 @@ def main():
     creds = authenticate()
     service = build('gmail', 'v1', credentials=creds)
     get_latest_pdf(service)
-    subprocess.run(["python3", "update_site.py"])
 
 if __name__ == '__main__':
     main()
