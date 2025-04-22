@@ -16,19 +16,24 @@ def fetch_latest_pdf():
     mail.login(USER, PASS)
     mail.select(IMAP_FOLDER)
 
-    # Use Gmail's X‑GM‑RAW to search like Gmail web: has:attachment filename:pdf
-    typ, data = mail.search(None, 'X-GM-RAW', 'has:attachment filename:pdf')
+    # Try Gmail RAW search first
+    try:
+        typ, data = mail.search(None, '(X-GM-RAW "has:attachment filename:pdf")')
+    except imaplib.IMAP4.error as e:
+        print("X-GM-RAW failed, falling back to ALL search:", e)
+        typ, data = mail.search(None, "ALL")
+
     if typ != 'OK':
         print("Error searching mailbox:", data)
         return
 
     ids = data[0].split()
     if not ids:
-        print("No PDF attachments found.")
+        print("No messages found.")
         return
 
-    # Iterate newest→oldest
-    for msgid in reversed(ids):
+    # Only check the last 10 messages for performance
+    for msgid in reversed(ids[-10:]):
         typ, msg_data = mail.fetch(msgid, "(RFC822)")
         if typ != 'OK':
             continue
