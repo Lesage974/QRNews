@@ -1,6 +1,4 @@
-# .github/workflows/fetch-and-update.yml
-
-name: Fetch and Update PDF
+name: Fetch and Update PDF via IMAP
 
 on:
   schedule:
@@ -22,33 +20,28 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Install dependencies
+    - name: (Optional) Install dependencies
       run: |
         pip install --upgrade pip
-        pip install -r requirements.txt
+        # No extra packages needed if you're using stdlib imaplib
 
-    #- name: Decode Google API creds
-    #  run: |
-    #   echo "${{ secrets.GOOGLE_CREDENTIALS_B64 }}" | base64 -d > credentials.json
-    #    echo "${{ secrets.GOOGLE_TOKEN_B64 }}"     | base64 -d > token.json
     - name: Fetch latest PDF via IMAP
       env:
         GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
         GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
       run: |
-        pip install pyzmail36  # or just use built‑in imaplib
         python fetch_pdf.py
-
-    #- name: Fetch latest PDF
-    #  run: python fetch_pdf.py
 
     - name: Commit & push latest.pdf
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
+        # Override the remote to use your PAT
         git remote set-url origin https://x-access-token:$GH_TOKEN@github.com/Lesage974/QRNews.git
+        # Set a valid commit identity
         git config user.name "github-actions"
         git config user.email "actions@github.com"
+        # Stage and commit if changed
         git add latest.pdf
         git commit -m "Update PDF via GitHub Actions" || echo "No changes to commit"
         git push origin main
