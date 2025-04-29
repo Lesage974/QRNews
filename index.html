@@ -9,8 +9,21 @@
     iframe { width: 100%; height: 100%; border: none; }
   </style>
 </head>
+<header class="site-header">
+  <a href="index.html" class="logo">
+    <img src="MERCURE.png" alt="Grand Mercure Logo">
+  </a>
+  <nav class="main-nav">
+    <ul>
+      <li><a href="brazil.html">Brazil News</a></li>
+      <li><a href="international.html">International News</a></li>
+      <li><a href="financial.html">Financial News</a></li>
+    </ul>
+  </nav>
+</header>
 <body>
   <!-- Pointing to viewer.html inside the 'web' folder, passing the URL of latest.pdf -->
   <iframe src="web/viewer.html?file=../latest.pdf" allowfullscreen></iframe>
 </body>
+<button id="scrollToTop" title="Back to top">^</button>
 </html>
