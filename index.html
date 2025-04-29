@@ -25,6 +25,25 @@
 <body>
   <!-- Pointing to viewer.html inside the 'web' folder, passing the URL of latest.pdf -->
   <iframe src="web/viewer.html?file=../latest.pdf" allowfullscreen></iframe>
+  <script>
+  // grab the button
+  const toTop = document.getElementById('scrollToTop');
+  
+  // show/hide on scroll
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) {
+      toTop.classList.add('show');
+    } else {
+      toTop.classList.remove('show');
+    }
+  });
+  
+  // smooth scroll to top
+  toTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  </script>
+
 </body>
 <button id="scrollToTop" title="Back to top">^</button>
 </html>
